@@ -544,6 +544,17 @@ function cf_enable_service_access() {
   cf enable-service-access "${args[@]}"
 }
 
+function cf_bind_route_service() {
+  local domain=${1:?domain null or not set}
+  local service_instance=${2:?service_instance null or not set}
+  local configuration=${3:-}
+
+  local args=("$domain" "$service_instance")
+  [ -n "$configuration" ] && args+=(-c "$configuration")
+
+  cf bind-route-service "${args[@]}"
+}
+
 function cf_disable_service_access() {
   local service_broker=${1:?service_broker null or not set}
   local plan=${2:-}
