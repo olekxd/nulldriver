@@ -544,17 +544,6 @@ function cf_enable_service_access() {
   cf enable-service-access "${args[@]}"
 }
 
-function cf_bind_route_service() {
-  local domain=${1:?domain null or not set}
-  local service_instance=${2:?service_instance null or not set}
-  local configuration=${3:-}
-
-  local args=("$domain" "$service_instance")
-  [ -n "$configuration" ] && args+=(-c "$configuration")
-
-  cf bind-route-service "${args[@]}"
-}
-
 function cf_disable_service_access() {
   local service_broker=${1:?service_broker null or not set}
   local plan=${2:-}
@@ -583,10 +572,27 @@ function cf_bind_service() {
   cf bind-service "${args[@]}"
 }
 
+function cf_bind_route_service() {
+  local domain=${1:?domain null or not set}
+  local service_instance=${2:?service_instance null or not set}
+  local configuration=${3:-}
+
+  local args=("$domain" "$service_instance")
+  [ -n "$configuration" ] && args+=(-c "$configuration")
+
+  cf bind-route-service "${args[@]}"
+}
+
 function cf_unbind_service() {
   local app_name=${1:?app_name null or not set}
   local service_instance=${2:?service_instance null or not set}
   cf unbind-service "$app_name" "$service_instance"
+}
+
+function cf_unbind_route_service() {
+  local domain=${1:?domain null or not set}
+  local service_instance=${2:?service_instance null or not set}
+  cf unbind-route-service "$domain" "$service_instance"
 }
 
 function cf_is_app_bound_to_service() {
