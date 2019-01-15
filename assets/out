@@ -423,7 +423,14 @@ echo "$params" | jq -c '.commands[]' | while read -r options; do
     configuration=$(echo $options | jq -r '.configuration //empty')
     printf '\e[92m[INFO]\e[0m Executing \e[33m%s\e[0m: %s\n' "$command" "$service_instance"
     cf_target "$org" "$space"
-    cf_bind_service "$app_name" "$service_instance" "$configuration"
+    cf_bind_service "$app_name" "$service_instance" "$configuration"  
+  elif [ "bind-route-service" = "$command" ]; then
+    domain=$(echo $options | jq -r '.domain //empty')
+    service_instance=$(echo $options | jq -r '.service_instance //empty')
+    configuration=$(echo $options | jq -r '.configuration //empty')
+    printf '\n THIS IS INFO THAT WORKS'
+    cf_target "$org" "$space"
+    cf_bind_service "$domain" "$service_instance" "$configuration"  
   elif [ "unbind-service" = "$command" ]; then
     app_name=$(echo $options | jq -r '.app_name //empty')
     service_instance=$(echo $options | jq -r '.service_instance //empty')
