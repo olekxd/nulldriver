@@ -575,13 +575,14 @@ function cf_bind_service() {
 function cf_bind_route_service() {
   local domain=${1:?domain null or not set}
   local service_instance=${2:?service_instance null or not set}
-  local hostname=${3:-}
+  local hostname=${3:?hostname null or not set}
   local path=${4:-}
+  local configuration=${5:-}
 
-  local args=("$domain" "$service_instance")
-  [ -n "$hostname" ] && args+=(--hostname "$hostname")
+  local args=("$domain" "$service_instance" "hostname")
   [ -n "$path" ] && args+=(--path "$path")
-  
+  [ -n "$configuration" ] && args+=(-c "$configuration")
+
   cf bind-route-service "${args[@]}"
 }
 
@@ -594,7 +595,9 @@ function cf_unbind_service() {
 function cf_unbind_route_service() {
   local domain=${1:?domain null or not set}
   local service_instance=${2:?service_instance null or not set}
-  cf unbind-route-service "$domain" "$service_instance"
+  local hostname=${3:-}
+  local path=${4:-}
+  cf unbind-route-service "$domain" "$service_instance" "$hostname" "$path"
 }
 
 function cf_is_app_bound_to_service() {
