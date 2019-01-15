@@ -574,9 +574,9 @@ function cf_bind_service() {
 
 function cf_bind_route_service() {
   local domain=${1:?domain null or not set}
-  local hostname=${2:-}
-  local path=${3:-}
-  local service_instance=${4:?service_instance null or not set}
+  local service_instance=${2:-}
+  local hostname=${3:-}
+  local path=${4:-}
   local configuration=${5:-}
 
   local args=("$domain" "$service_instance")
