@@ -575,11 +575,13 @@ function cf_bind_service() {
 function cf_bind_route_service() {
   local domain=${1:?domain null or not set}
   local service_instance=${2:?service_instance null or not set}
-  local configuration=${3:-}
+  local hostname=${3:-}
+  local path=${4:-}
 
   local args=("$domain" "$service_instance")
-  [ -n "$configuration" ] && args+=(-c "$configuration")
-
+  [ -n "$hostname" ] && args+=(--hostname "$hostname")
+  [ -n "$path" ] && args+=(--path "$path")
+  
   cf bind-route-service "${args[@]}"
 }
 
